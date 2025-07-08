@@ -1,1 +1,3 @@
-PyMuPDF==1.19.6
+pillow
+imagehash
+PyMuPDF

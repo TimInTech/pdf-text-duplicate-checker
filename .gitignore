@@ -1,7 +1,21 @@
-.venv/
+# Python Bytecode & Cache
 __pycache__/
-*.pyc
-*.pyo
+*.py[cod]
 *.pyd
+
+# Logs & temporäre Dateien
 *.log
-/tmp/
+*.tmp
+*.bak
+
+# Virtuelle Umgebungen
+.venv/
+venv/
+
+# Temporäre Render-Ausgabe (z. B. von pdftoppm)
+tmp/
+tmp/*
+/tmp/pdf_dupe_pages/
+
+# System-/IDE-Dateien
+.DS_Store
