@@ -1,0 +1,60 @@
+# PDF Text & Bild Duplikat Checker
+
+Dieses Projekt hilft dir, **Duplikate von PDF-Dateien** anhand ihres Textinhalts oder ihres visuellen Seiteninhalts (Bild-Hash) zu erkennen.
+
+## Features
+
+- **Textbasierte Duplikaterkennung:**  
+  Findet PDFs mit identischem extrahierbarem Text (auch bei unterschiedlichem Dateinamen).
+- **Bildbasierte Duplikaterkennung:**  
+  Findet visuelle Duplikate, auch wenn der Text nicht extrahierbar ist (z.B. Scans).
+
+## Voraussetzungen
+
+- Python 3.8+
+- [PyMuPDF (fitz)](https://pymupdf.readthedocs.io/)
+- [Pillow](https://python-pillow.org/)
+- [ImageHash](https://pypi.org/project/ImageHash/)
+- [poppler-utils](https://poppler.freedesktop.org/) (für `pdftoppm`)
+
+Installiere die Abhängigkeiten mit:
+
+```sh
+pip install pymupdf pillow imagehash
+sudo apt install poppler-utils
+```
+
+## Nutzung
+
+### 1. Textbasierte Duplikaterkennung
+
+```sh
+python src/pdf_text_duplicate_checker.py
+```
+
+- Ausgabe: Liste der gefundenen Duplikate anhand des extrahierten Textes.
+
+### 2. Bildbasierte Duplikaterkennung
+
+```sh
+python src/pdf_dupe_imghash.py
+```
+
+- Ausgabe: Liste der gefundenen visuellen Duplikate (Seiten werden als Bilder verglichen).
+
+## Ordnerstruktur
+
+- Lege alle zu prüfenden PDFs in den Ordner  
+  `/home/gummi/Schreibtisch/AllePDF`  
+  (oder passe den Pfad in den Skripten an).
+
+## Hinweise
+
+- Leere oder bildbasierte PDFs werden beim Text-Check übersprungen.
+- Temporäre Bilddateien werden automatisch gelöscht.
+- Die Skripte sind für Linux optimiert.
+
+---
+
+**Lizenz:** MIT  
+**Autor:** [Dein Name oder GitHub-Handle]
