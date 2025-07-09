@@ -2,3 +2,4 @@ pymupdf
 pillow
 imagehash
 pytesseract
+pytesseract
