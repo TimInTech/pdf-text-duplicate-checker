@@ -3,19 +3,21 @@ __pycache__/
 *.py[cod]
 *.pyd
 
-# Logs & temporäre Dateien
+# Logs & temporary files
 *.log
 *.tmp
 *.bak
 
-# Virtuelle Umgebungen
+# Virtual environments
 .venv/
 venv/
 
-# Temporäre Render-Ausgabe (z. B. von pdftoppm)
+# Temporary render output (e.g. from pdftoppm)
 tmp/
 tmp/*
 /tmp/pdf_dupe_pages/
 
-# System-/IDE-Dateien
+# System/IDE files
 .DS_Store
+
+

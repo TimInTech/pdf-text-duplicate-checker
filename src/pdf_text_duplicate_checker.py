@@ -4,7 +4,7 @@ import os
 import hashlib
 import fitz  # PyMuPDF
 
-pdf_dir = "/home/gummi/Schreibtisch/AllePDF"
+PDF_DIR = "/home/gummi/Schreibtisch/AllePDF"
 text_hash_map = {}
 duplicates = []
 
@@ -23,16 +23,14 @@ def extract_text_hash(path):
     except Exception as e:
         return f"ERROR: {e}"
 
-for root, dirs, files in os.walk(pdf_dir):
+for root, dirs, files in os.walk(PDF_DIR):
     for file in files:
         if file.lower().endswith(".pdf"):
             fullpath = os.path.join(root, file)
             h = extract_text_hash(fullpath)
             if h == "EMPTY_OR_IMAGE_ONLY":
-                print(f"[SKIP] Kein extrahierbarer Text: {file}")
+                print(f"[SKIP] No extractable text: {file}")
                 continue
-            # Seitenanzahl und sortierte Hashes als Schlüssel (für strengen Vergleich)
-            # Hier: h ist bereits ein Hash des gesamten Textes, daher bleibt es wie gehabt
             h_key = h
             if h_key in text_hash_map:
                 duplicates.append((text_hash_map[h_key], fullpath))
@@ -40,16 +38,9 @@ for root, dirs, files in os.walk(pdf_dir):
                 text_hash_map[h_key] = fullpath
 
 if duplicates:
-    print("Gefundene Duplikate anhand von Textinhalt:\n")
+    print("Found duplicates based on text content:\n")
     for orig, dup in duplicates:
         print(f"Original : {orig}")
-        print(f"Duplikat : {dup}")
+        print(f"Duplicate: {dup}")
 else:
-    print("Keine textbasierten Duplikate gefunden.")
-
-# Installiere pymupdf, falls noch nicht geschehen
-try:
-    import fitz
-except ImportError:
-    import pip
-    pip.main(['install', 'pymupdf'])
+    print("No text-based duplicates found.")

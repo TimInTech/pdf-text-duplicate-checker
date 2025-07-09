@@ -8,7 +8,7 @@ import imagehash
 
 PDF_DIR = "/home/gummi/Schreibtisch/AllePDF"
 TEMP_IMG_DIR = "/tmp/pdf_dupe_pages"
-DUPLICATE_DIR = os.path.join(PDF_DIR, "duplikate")
+DUPLICATE_DIR = os.path.join(PDF_DIR, "duplicates")
 
 os.makedirs(TEMP_IMG_DIR, exist_ok=True)
 os.makedirs(DUPLICATE_DIR, exist_ok=True)
@@ -40,20 +40,20 @@ for fname in sorted(os.listdir(PDF_DIR)):
 
     try:
         hashes = pdf_to_hashes(path, base)
-        h_key = f"{len(hashes)}|" + "|".join(sorted(hashes))  # Seitenanzahl + sortierte Hashes
+        h_key = f"{len(hashes)}|" + "|".join(sorted(hashes))  # page count + sorted hashes
 
         if h_key in hash_map:
-            print(f"[DUPLIKAT] {fname} == {hash_map[h_key]}")
+            print(f"[DUPLICATE] {fname} == {hash_map[h_key]}")
             duplicates.append(path)
             target = os.path.join(DUPLICATE_DIR, fname)
             if os.path.exists(target):
-                print(f"[WARNUNG] Datei existiert bereits im Duplikat-Ordner: {fname}")
+                print(f"[WARNING] File already exists in duplicates folder: {fname}")
             else:
                 shutil.move(path, target)
         else:
             hash_map[h_key] = fname
 
     except subprocess.CalledProcessError:
-        print(f"[FEHLER] {fname}: PDF kann nicht verarbeitet werden (z. B. passwortgeschützt)")
+        print(f"[ERROR] {fname}: PDF cannot be processed (e.g., password protected)")
     except Exception as e:
-        print(f"[FEHLER] {fname}: {e}")
+        print(f"[ERROR] {fname}: {e}")

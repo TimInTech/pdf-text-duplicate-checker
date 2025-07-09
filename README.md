@@ -1,83 +1,60 @@
 # PDF Text & Image Duplicate Checker
 
-Dieses Tool analysiert PDF-Dateien anhand ihres **Textinhalts** und/oder ihrer **Bilder** (pHash-Vergleich) und erkennt Duplikate.
+This project helps you **detect duplicate PDF files** based on their text content or their visual page content (image hash).
 
-### 🔍 Funktionen
+## Features
 
-- **Textbasierter Vergleich:** via PyMuPDF (Textextraktion + SHA256)
-- **Bildbasierter Vergleich:** via `pdftoppm` + perceptual hash (pHash)
-- **Automatisches Verschieben** von Duplikaten in den Unterordner `duplikate/`
-- Überspringt defekte oder passwortgeschützte Dateien
+- **Text-based duplicate detection:**  
+  Finds PDFs with identical extractable text (even if filenames differ).
+- **Image-based duplicate detection:**  
+  Finds visually identical PDFs, even if the text is not extractable (e.g., scans).
 
----
+## Requirements
 
-### 📁 Verzeichnisstruktur
+- Python 3.8+
+- [PyMuPDF (fitz)](https://pymupdf.readthedocs.io/)
+- [Pillow](https://python-pillow.org/)
+- [ImageHash](https://pypi.org/project/ImageHash/)
+- [poppler-utils](https://poppler.freedesktop.org/) (for `pdftoppm`)
 
-```plaintext
-pdf-text-duplicate-checker/
-├── .venv/                     # Virtuelle Umgebung
-├── src/
-│   ├── pdf_text_duplicate_checker.py   # Textbasierter Vergleich
-│   ├── pdf_dupe_imghash.py             # Bildbasierter Vergleich (mit Verschieben)
-│   └── ...
-├── duplikate/                 # Zielordner für gefundene Duplikate
-├── requirements.txt           # Python-Abhängigkeiten
-├── README.md                  # Diese Datei
+Install dependencies with:
+
+```sh
+pip install pymupdf pillow imagehash
+sudo apt install poppler-utils
 ```
 
----
+## Usage
 
-### 🚀 Verwendung
+### 1. Text-based duplicate detection
 
-1. **Voraussetzungen**
-
-```bash
-sudo apt install poppler-utils python3-venv
-```
-
-2. **Projekt initialisieren**
-
-```bash
-cd ~/code/pdf-text-duplicate-checker
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-3. **PDFs vorbereiten**
-
-Lege alle PDFs in folgenden Ordner:
-
-```bash
-/home/gummi/Schreibtisch/AllePDF/
-```
-
-4. **Duplikate per Bildvergleich erkennen & verschieben**
-
-```bash
-python src/pdf_dupe_imghash.py
-```
-
-5. **Optional: Nur textbasierter Vergleich (ohne Verschieben)**
-
-```bash
+```sh
 python src/pdf_text_duplicate_checker.py
 ```
 
----
+- Output: List of found duplicates based on extracted text.
 
-### 📦 Abhängigkeiten (`requirements.txt`)
+### 2. Image-based duplicate detection
 
-```txt
-pillow
-imagehash
-PyMuPDF
+```sh
+python src/pdf_dupe_imghash.py
 ```
 
+- Output: List of found visual duplicates (pages are compared as images).
+
+## Folder Structure
+
+- Place all PDFs to be checked in the folder  
+  `/home/gummi/Schreibtisch/AllePDF`  
+  (or adjust the path in the scripts).
+
+## Notes
+
+- Empty or image-only PDFs are skipped in the text check.
+- Temporary image files are deleted automatically.
+- The scripts are optimized for Linux.
+
 ---
 
-## 🔐 Hinweis
-
-**Es wird keine Datei gelöscht.**  
-Alle erkannten Duplikate werden **nur verschoben** in:  
-`/home/gummi/Schreibtisch/AllePDF/duplikate/`
+**License:** MIT  
+**Author:** TimInTech
