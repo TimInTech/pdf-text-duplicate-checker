@@ -3,3 +3,4 @@ pillow
 imagehash
 pytesseract
 pytesseract
+tqdm
