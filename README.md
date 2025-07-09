@@ -1,89 +1,83 @@
-
 # PDF Text & Image Duplicate Checker
 
-Dieses Tool erkennt Duplikate unter PDF-Dateien auf Basis von:
+Dieses Tool analysiert PDF-Dateien anhand ihres **Textinhalts** und/oder ihrer **Bilder** (pHash-Vergleich) und erkennt Duplikate.
 
-- **extrahiertem Textinhalt (via PyMuPDF)**
-- **visueller Ähnlichkeit (per pHash über gerenderte Seitenbilder)**
+### 🔍 Funktionen
 
----
-
-### 🐍 Voraussetzungen
-
-- Python 3.8 oder höher
+- **Textbasierter Vergleich:** via PyMuPDF (Textextraktion + SHA256)
+- **Bildbasierter Vergleich:** via `pdftoppm` + perceptual hash (pHash)
+- **Automatisches Verschieben** von Duplikaten in den Unterordner `duplikate/`
+- Überspringt defekte oder passwortgeschützte Dateien
 
 ---
 
-### 📦 Abhängigkeiten installieren
+### 📁 Verzeichnisstruktur
 
-Installiere die Python-Abhängigkeiten über:
+```plaintext
+pdf-text-duplicate-checker/
+├── .venv/                     # Virtuelle Umgebung
+├── src/
+│   ├── pdf_text_duplicate_checker.py   # Textbasierter Vergleich
+│   ├── pdf_dupe_imghash.py             # Bildbasierter Vergleich (mit Verschieben)
+│   └── ...
+├── duplikate/                 # Zielordner für gefundene Duplikate
+├── requirements.txt           # Python-Abhängigkeiten
+├── README.md                  # Diese Datei
+```
+
+---
+
+### 🚀 Verwendung
+
+1. **Voraussetzungen**
 
 ```bash
+sudo apt install poppler-utils python3-venv
+```
+
+2. **Projekt initialisieren**
+
+```bash
+cd ~/code/pdf-text-duplicate-checker
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Zusätzlich wird `pdftoppm` aus `poppler-utils` benötigt:
+3. **PDFs vorbereiten**
 
-#### Linux:
-```bash
-sudo apt install poppler-utils
-```
-
-#### Windows:
-1. Lade Poppler für Windows von [hier](http://blog.alivate.com.au/poppler-windows/) herunter.
-2. Entpacke das Archiv, z.B. nach `C:\poppler`.
-3. Füge den Pfad zu `C:\poppler\bin` zur Umgebungsvariable `PATH` hinzu:  
-   [Anleitung zum Hinzufügen](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/)
-
----
-
-### ▶️ Nutzung
+Lege alle PDFs in folgenden Ordner:
 
 ```bash
-python src/pdf_dupe_imghash.py    # erkennt visuelle Duplikate
-python src/pdf_dupe_text.py       # erkennt Text-Duplikate
+/home/gummi/Schreibtisch/AllePDF/
 ```
 
-Duplikate werden geloggt und (optional) verschoben.
+4. **Duplikate per Bildvergleich erkennen & verschieben**
 
----
-
-### ⚙️ Zielordner für Duplikate anpassen
-
-Standardmäßig werden Duplikate nach  
-`~/Schreibtisch/AllePDF/duplikate/`  
-verschoben (unter Windows z.B. `C:\Users\<DeinName>\Desktop\AllePDF\duplikate\`).  
-Du kannst den Zielordner im jeweiligen Python-Skript (`src/pdf_dupe_text.py` oder `src/pdf_dupe_imghash.py`) anpassen.
-
----
-
-### 💡 Beispiel (Konsolenausgabe)
-
+```bash
+python src/pdf_dupe_imghash.py
 ```
-[2025-07-08 12:00:00] Duplikat gefunden: doc1.pdf == doc2.pdf (Textähnlichkeit: 99%)
-[2025-07-08 12:00:01] Duplikat (Bild): doc3.pdf == doc4.pdf (pHash-Abstand: 3)
+
+5. **Optional: Nur textbasierter Vergleich (ohne Verschieben)**
+
+```bash
+python src/pdf_text_duplicate_checker.py
 ```
 
 ---
 
-### 📂 Verzeichnisstruktur
+### 📦 Abhängigkeiten (`requirements.txt`)
 
-```
-pdf-text-duplicate-checker/
-├── src/
-│   ├── pdf_dupe_text.py
-│   └── pdf_dupe_imghash.py
-├── requirements.txt
-├── README.md
-└── .gitignore
+```txt
+pillow
+imagehash
+PyMuPDF
 ```
 
 ---
 
-### 📝 Lizenz
+## 🔐 Hinweis
 
-MIT License
-
----
-
-
+**Es wird keine Datei gelöscht.**  
+Alle erkannten Duplikate werden **nur verschoben** in:  
+`/home/gummi/Schreibtisch/AllePDF/duplikate/`
