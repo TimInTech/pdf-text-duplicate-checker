@@ -6,6 +6,7 @@ import fitz  # PyMuPDF
 import pytesseract
 from PIL import Image
 import csv
+import shutil
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
 
@@ -95,5 +96,4 @@ def main():
     print(f"📝 Markdown: {OUTPUT_MD}")
 
 if __name__ == "__main__":
-    import shutil
     main()
